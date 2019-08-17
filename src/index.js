@@ -1,13 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser')
+const app = require('./app');
 
-const app = express();
+const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.get('/', (req, res) => {
-  res.json({ok: true});
-})
-
-app.listen(3000);
+app.listen(port);
