@@ -1,4 +1,10 @@
-Node Express Mongo
+Node Express Graphql
 ==================
 
-Projeto de estudo
+## Technologies
+- Node
+- Express
+- GraphQL
+- PostgresA
+- Docker
+- Sequelize
