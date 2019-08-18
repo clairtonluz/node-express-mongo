@@ -5,6 +5,7 @@ const ExtractJWT = passportJWT.ExtractJwt;
 
 const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = passportJWT.Strategy;
+const config = require('../../config');
 
 const userService = require('../services/userService')
 
@@ -31,9 +32,11 @@ passport.use(new LocalStrategy({
 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'your_jwt_secret'
+  secretOrKey: config.jwt.secret,
+  // issuer: 'rastreamento.bytecom.psi.br',
 },
-  function (jwtPayload, cb) {
-    return cb(null, jwtPayload);
+  function (jwtPayload, done) {
+    console.log(jwtPayload);
+    return done(null, jwtPayload);
   }
 ));

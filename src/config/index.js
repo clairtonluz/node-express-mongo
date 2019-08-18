@@ -3,6 +3,9 @@ require('dotenv').config({
 })
 
 module.exports = {
+  jwt: {
+    secret: process.env.JWT_SECRET,
+  },
   database: {
     host: process.env.DB_HOST,
     username: process.env.DB_USER,

@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const expressGraphql = require("express-graphql");
 const schema = require('../graphql/schema');
 const resolvers = require('../graphql/resolvers');
