@@ -5,6 +5,9 @@ require('dotenv').config({
 module.exports = {
   jwt: {
     secret: process.env.JWT_SECRET,
+    issuer: process.env.JWT_ISSUER,
+    expiresIn: process.env.JWT_EXPIRES_IN,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
   },
   database: {
     host: process.env.DB_HOST,

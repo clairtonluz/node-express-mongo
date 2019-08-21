@@ -24,7 +24,6 @@ passport.use(new LocalStrategy({
       }
       return done(null, { id: user.id, name: user.name, email });
     } catch (err) {
-      console.log('error:', err);
       return done(err);
     }
   }
@@ -33,7 +32,8 @@ passport.use(new LocalStrategy({
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: config.jwt.secret,
-  // issuer: 'rastreamento.bytecom.psi.br',
+  // issuer: config.jwt.issuer,
+  issuer: 'http://localhost',
 },
   function (jwtPayload, done) {
     console.log(jwtPayload);

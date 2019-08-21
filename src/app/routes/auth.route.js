@@ -5,19 +5,40 @@ const config = require('../../config');
 
 router.post('/login', function (req, res, next) {
   passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({
-        message: 'Something is not right',
-        user: user
+
+    if (err) {
+      return res.status(500).json({
+        message: err.message,
+        err
       });
     }
+    if (!user) {
+      return res.status(401).json({ message: 'Usuário não existe' });
+    }
+
     req.login(user, { session: false }, (err) => {
       if (err) {
         res.send(err);
       }
-      // generate a signed son web token with the contents of user object and return it in the response
-      const token = jwt.sign(user, config.jwt.secret);
-      return res.json({ user, token });
+      const userData = { name: user.name, email: user.email };
+      const tokenData = {
+        subject: `${user.id}`,
+        issuer: config.jwt.issuer,
+        expiresIn: `${config.jwt.expiresIn}s`,
+      };
+      const refreshTokenData = {
+        subject: `${user.id}`,
+        issuer: config.jwt.issuer,
+        expiresIn: `${config.jwt.refreshExpiresIn}s`,
+      };
+
+      const token = jwt.sign(userData, config.jwt.secret, tokenData);
+      const refreshToken = jwt.sign(userData, config.jwt.secret + 'refresh', tokenData);
+      return res.json({
+        user,
+        token: { value: token, expiresIn: config.jwt.expiresIn - 1 },
+        refreshToken: { value: refreshToken, expiresIn: config.jwt.refreshExpiresIn - 1 },
+      });
     });
   })(req, res);
 });

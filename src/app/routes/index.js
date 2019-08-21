@@ -3,7 +3,6 @@ const auth = require('./auth.route');
 const user = require('./user.route');
 const notFound = require('./notFound.route');
 const errorHandler = require('./error.route');
-const passport = require('passport');
 
 module.exports = app => {
   app.use(graphql);
