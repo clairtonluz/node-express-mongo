@@ -7,6 +7,7 @@ module.exports = {
     secret: process.env.JWT_SECRET,
     issuer: process.env.JWT_ISSUER,
     expiresIn: process.env.JWT_EXPIRES_IN,
+    refreshSecret: process.env.JWT_SECRET + "refresh",
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
   },
   database: {

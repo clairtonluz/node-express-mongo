@@ -31,7 +31,14 @@ passport.use(new LocalStrategy({
 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: config.jwt.secret,
+  // secretOrKey: config.jwt.secret,
+  secretOrKeyProvider: (req, rawJwtToken, done) => {
+    if (req.originalUrl === '/auth/refresh') {
+      return done(null, config.jwt.refreshSecret);
+    } else {
+      done(null, config.jwt.secret);
+    }
+  },
   // issuer: config.jwt.issuer,
   issuer: 'http://localhost',
 },

@@ -3,6 +3,28 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const config = require('../../config');
 
+const createToken = (id, name, email) => {
+  const userData = { name, email };
+  const tokenData = {
+    subject: `${id}`,
+    issuer: config.jwt.issuer,
+    expiresIn: `${config.jwt.expiresIn}s`,
+  };
+  const refreshTokenData = {
+    subject: `${id}`,
+    issuer: config.jwt.issuer,
+    expiresIn: `${config.jwt.refreshExpiresIn}s`,
+  };
+
+  const token = jwt.sign(userData, config.jwt.secret, tokenData);
+  const refreshToken = jwt.sign(userData, config.jwt.refreshSecret, refreshTokenData);
+  return {
+    user,
+    token: { value: token, expiresIn: config.jwt.expiresIn - 1 },
+    refreshToken: { value: refreshToken, expiresIn: config.jwt.refreshExpiresIn - 1 },
+  };
+
+}
 router.post('/login', function (req, res, next) {
   passport.authenticate('local', { session: false }, (err, user, info) => {
 
@@ -33,7 +55,7 @@ router.post('/login', function (req, res, next) {
       };
 
       const token = jwt.sign(userData, config.jwt.secret, tokenData);
-      const refreshToken = jwt.sign(userData, config.jwt.secret + 'refresh', tokenData);
+      const refreshToken = jwt.sign(userData, config.jwt.refreshSecret, tokenData);
       return res.json({
         user,
         token: { value: token, expiresIn: config.jwt.expiresIn - 1 },
@@ -43,4 +65,12 @@ router.post('/login', function (req, res, next) {
   })(req, res);
 });
 
+
+router.post('/refresh', function (req, res, next) {
+  // console.log('req.user', req);
+  res.send({
+    user: req.user,
+    teste: "testse",
+  });
+});
 module.exports = router;

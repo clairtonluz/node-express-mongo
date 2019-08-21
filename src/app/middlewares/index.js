@@ -13,4 +13,5 @@ module.exports = app => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use('/api', passport.authenticate('jwt', { session: false }));
   app.use('/graphql', passport.authenticate('jwt', { session: false }));
+  app.use('/auth/refresh', passport.authenticate('jwt', { session: false }));
 }
